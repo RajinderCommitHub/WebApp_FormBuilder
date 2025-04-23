@@ -1,0 +1,43 @@
+﻿@model List<DataAccessLayer.Models.FormBuilder>
+
+    <style>
+body {
+        background-color:wheat;
+    }
+
+</style>
+<h3 class="text-info">Attempted Questions</h3>
+<br/>
+<div class="card" style="width: 40rem;">
+    <div class="card-body">
+        <ol type="square">
+            @foreach (var question in Model)
+        {
+           <h4><li class="card-title">@question.Questions</li></h4>
+            @if(question.Answer1 != "false")
+            {
+                <p class="card-text">@question.Answer1</p>
+            }
+            @if (question.Answer2 != "false")
+            {
+                <p class="card-text">@question.Answer2</p>
+            }
+            @if (question.Answer3 != "false")
+            {
+                <p class="card-text">@question.Answer3</p>
+            }
+            @if (question.Answer4 != "false")
+            {
+                <p class="card-text">@question.Answer4</p>
+            }
+            @if (question.Answer5 != "false")
+            {
+                    <p class="card-text">@question.Answer5</p>
+            }
+            <p class="card-text">@question.Answer</p>
+            
+        }
+        </ol>
+    </div>
+</div><br />
+<a asp-action="Index" class="btn btn-success text-left text-white">Back to form builder</a>

@@ -1,0 +1,220 @@
+﻿@model List<DataAccessLayer.Models.FormBuilder>
+
+<div class="text-left">
+    <a class="btn btn-info" asp-controller="FormBuilder" asp-action="Index">
+        <i class="bi bi-plus-circle"></i>&nbsp; Add More Questions
+    </a>
+</div>
+<br />
+<partial name="_Notification" />
+<form id="form1" onsubmit="return validateFormData()" method="post" asp-controller="FormBuilder" asp-action="Answer" style="width:90%;">
+    @{
+        int j = 0;
+    }
+    @for (int i = 0; i < Model.Count; i++)
+    {
+        { j = j + 1; }
+        @if (Model[i].IsChecked == false)
+        {
+            <div class="card">
+                <div class="card-header">
+                    <div class=" form-group row m-2 p-2">
+                        <div class="col-4">
+                            <h5><label>Question</label></h5>
+                        </div>
+                        <div class="col-8">
+                            <h5> <p class="text-primary">@Model[i].Questions</p></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row m-2 p-2">
+                        <div class="col-4">
+                            <h5><label>Answer</label></h5>
+                        </div>
+                        <div class="col-8">
+                            <input type="hidden" asp-for="@Model[i].Questions" />
+                            <input type="hidden" asp-for="@Model[i].Id" />
+                            <textarea id="input_@i" type="text" asp-for="@Model[i].Answer" rows="4" cols="50"></textarea>
+                            <br /><br />
+                            @if (Model[i].IsRequired)
+                            {
+                                <input id="isrequired_@i" type="hidden" asp-for="@Model[i].IsRequired" value="true" />
+                                <p id="req_@i" class="text-danger" style="display:none">Answer Field cannot be empty</p>
+                            }
+                            else
+                            {
+                                <input id="isrequired_@i" type="hidden" asp-for="@Model[i].IsRequired" value="false" />
+                            }
+                            @if (Model[i].IsSpecified)
+                            {
+                                <input type="hidden" asp-for="@Model[i].IsSpecified" value="true" />
+                            }
+                            <input id="check_@i" type="hidden" asp-for="@Model[i].IsChecked" value="false" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-header">
+                    <div class=" form-group row m-2 p-2">
+                        <div class="col-4">
+                            <h5><label>Question</label></h5>
+                        </div>
+                        <div class="col-8">
+                            <h5><p class="text-primary">@Model[i].Questions</p></h5>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="form-group row m-2 p-2">
+                        <div class="col-4">
+                            <h5> <label>Answer</label></h5>
+                        </div>
+                        <div class="col-8">
+                            <input type="hidden" asp-for="@Model[i].Id" />
+                            <input type="hidden" asp-for="@Model[i].Questions" />
+                            <input type="hidden" asp-for="@Model[i].Option1" />
+                            <input type="hidden" asp-for="@Model[i].Option2" />
+                            <input type="hidden" asp-for="@Model[i].Option3" />
+                            <input type="hidden" asp-for="@Model[i].Option4" />
+                            <input type="hidden" asp-for="@Model[i].Option5" />
+
+
+                            @if (Model[i].Option1 != null)
+                            {
+                                <input id="op1_@i" type="checkbox" asp-for="@Model[i].Answer1" />
+                                <label asp-for="@Model[i].Option1">@Model[i].Option1</label>
+                                <br />
+                            }
+
+
+                            @if (Model[i].Option2 != null)
+                            {
+                                <input id="op2_@i" type="checkbox" asp-for="@Model[i].Answer2" />
+                                <label asp-for="@Model[i].Option2">@Model[i].Option2</label>
+                                <br />
+                            }
+
+
+                            @if (Model[i].Option3 != null)
+                            {
+                                <input id="op3_@i" type="checkbox" asp-for="@Model[i].Answer3" />
+                                <label asp-for="@Model[i].Option3">@Model[i].Option3</label>
+                                <br />
+                            }
+
+
+                            @if (Model[i].Option4 != null)
+                            {
+                                <input id="op4_@i" type="checkbox" asp-for="@Model[i].Answer4" />
+                                <label asp-for="@Model[i].Option4">@Model[i].Option4</label>
+                                <br />
+                            }
+
+
+                            @if (Model[i].Option5 != null)
+                            {
+                                <input id="op5_@i" type="checkbox" asp-for="@Model[i].Answer5" />
+                                <label asp-for="@Model[i].Option5">@Model[i].Option5</label>
+                                <br />
+                            }
+
+                            @if (Model[i].IsSpecified)
+                            {
+                                <input type="checkbox" id="ch_@i" onclick="newfunction(@i)">
+                                <input type="hidden" asp-for="@Model[i].IsSpecified" value="true" />
+                                <label id="lab_@i">Other Option</label>
+                            }
+                            <div class="form-group row ">
+                                <div class="col-5"></div>
+                                <div class="col-7">
+                        <textarea id="ans_@i" type="text" asp-for="@Model[i].Answer" rows="4" cols="50" style="display:none" placeholder="Other Option"></textarea>
+                                </div>
+                            </div>
+
+                            @if (Model[i].IsRequired)
+                            {
+                                <input id="isrequired_@i" type="hidden" asp-for="@Model[i].IsRequired" value="true" />
+                                <p id="req_@i" class="text-danger" style="display:none">select atleast one option</p>
+                            }
+                            else
+                            {
+                                <input id="isrequired_@i" type="hidden" asp-for="@Model[i].IsRequired" value="false" />
+                            }
+
+                            @if (Model[i].IsChecked)
+                            {
+                                <input id="check_@i" type="hidden" asp-for="@Model[i].IsChecked" value="true" />
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br />
+        }
+
+    }
+    <br />
+    <input type="submit"  value="Submit Answers" class="btn btn-success"/>
+    <a class="btn btn-success" asp-controller="FormBuilder" asp-action="Review">Review Answers</a>
+</form>
+@section scripts{
+    <script src="~/js/answer.js"></script>
+    <script>
+        document.getElementById('form1').addEventListener('submit', function (event) {
+            for (var i = 0; i < @Model.Count; i++) {
+                var check = document.forms['form1']['check_' + i].value;
+                if (check == "true") {
+                    var flag = document.forms['form1']['isrequired_' + i].value;
+                    if (flag == "true") {
+                        var checkbox1 = document.getElementById("op1_" + i);
+                        var checkbox2 = document.getElementById("op2_" + i);
+                        var checkbox3 = document.getElementById("op3_" + i);
+                        var checkbox4 = document.getElementById("op4_" + i);
+                        var checkbox5 = document.getElementById("op5_" + i);
+                        var answerbox = document.forms["form1"]["ans_" + i].value;
+                        if (checkbox1.checked == true || checkbox2.checked == true || checkbox3.checked == true || checkbox4.checked == true || checkbox5.checked == true) {
+
+                        }
+                        else if (answerbox != "") {
+
+                        }
+                        else {
+                            event.preventDefault();
+                            Swal.fire({
+                                icon: 'warning',
+                                text: 'choose atleast 1 option Or write Answer in Other option!',
+                            });
+                        }
+                        document.getElementById('req_' + i).style.display = "block";
+                    }
+                }
+                else {
+                    var input = document.getElementById('input_' + i).value;
+                    var flag = document.forms['form1']['isrequired_' + i].value;
+                    if (flag == "true") {
+                        if (input.trim() === '') {
+                            event.preventDefault();
+                            var flag = document.forms['form1']['isrequired_' + i].value;
+                            if (flag == "true") {
+                                Swal.fire({
+                                    icon: 'warning',
+                                    title: 'Answer field cannot be Empty!',
+
+                                });
+                                document.getElementById('req_' + i).style.display = "block";
+                            }
+                        }
+                    }
+                }
+            }
+            return false;
+        });
+    </script>
+}

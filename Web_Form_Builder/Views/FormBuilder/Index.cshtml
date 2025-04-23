@@ -1,0 +1,232 @@
+﻿@model List<DataAccessLayer.Models.FormBuilder>
+<style>
+     
+        body {
+  background-color:beige;
+}
+    
+    table{
+
+        border-radius:10px;
+    }
+    table thead tr{
+            background-color: #92a8d1;
+        color:white;
+        padding: 3px;
+    }
+</style>
+
+<div class=" text-right form-group row m-2 p-2" id="PlaceHolderHere m-2 p-2">
+    <div class="col-12">
+        <a class="btn btn-success" asp-controller="FormBuilder" asp-action="Answer">
+            <i class="bi bi-file-earmark-text"></i>&nbsp;Answer Page
+        </a>
+        <button type="button" class="btn btn-info" data-toggle="modal" data-target="#AddQuestions">
+            <i class="bi bi-plus-circle"></i>&nbsp; Add More Questions
+        </button>  
+    </div>
+</div>
+
+@*Modal Code*@
+
+<div class="modal fade" id="AddQuestions" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="text-center"></p>
+                <h5 class="modal-title text-primary">Ouestions Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" asp-controller="FormBuilder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group  row m-2 p-2">
+                    <div class="col-4 text-info">
+                        <h6><label>Add Question</label></h6>
+                    </div>
+                    <div class="col-8">
+                        <input id="TextBox1" name="Questions" class="form-control" />
+                    </div>
+                </div>
+                <div class="form-group row m-2 p-2">
+                    <div class="col-4 text-info">
+                        <h6><label>Choose Option</label></h6>
+                    </div>
+                    <div class="col-8">
+                        <select name="IsChecked" onchange="showMe(this.value)" class="form-control">
+                            <option value="false">Paragraph</option>
+                            <option value="true">CheckBox</option>
+                        </select>
+                        <div id="x" style="display:none">
+                            <br />
+                            <input name="Option1" type="text" placeholder="Add Option 1"><br /><br />
+                            <input name="Option2" type="text" placeholder="Add Option 2"><br /><br />
+                            <button id="m" type="button" onclick="ButtonClick(this.value)" class="btn btn-primary">+Add another option</button>
+                            <div id="z" style="display:none">
+                                <input name="Option3" type="text" placeholder="Add Option 3">
+                                <button type="button" onclick="help1(this.value)" class="text-danger">X</button><br /><br />
+                                <button id="n" onclick="ButtonClick2(this.value)" type="button" class="btn btn-info">+Add Another option</button>
+                            </div>
+                            <div id="k" style="display:none">
+                                <input name="Option4" type="text" placeholder="Add Option 4">
+                                <button type="button" onclick="help2(this.value)" class="text-danger">X</button><br /><br />
+                                <button id="o" onclick="ButtonClick3(this.value)" type="button" class="btn btn-success">+Add Another option</button>
+                            </div>
+                            <div id="l" style="display:none">
+                                <input name="Option5" type="text" placeholder="Add Option 5">
+                                <button type="button" onclick="help3(this.value)" class="text-danger">X</button>
+                            </div>
+                        </div>
+                        <div id="y" style="display:none">
+                            <input class="form-control" placeholder="Paragraph answer" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check p-5">
+                    <div id="spec" style="display:none">
+                        <input type="checkbox" class="form-check-input" name="IsSpecified" value="true" />
+                        <label class="form-check-label text-primary">Allow user to Specify their own answer.</label>
+                        <br />
+                    </div>
+                    <input type="checkbox" class="form-check-input" name="IsRequired" value="true" />
+                    <label class="form-check-label text-primary">This Question is required.</label><br />
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button onclick="return savefunction()" asp-controller="FormBuilder" asp-action="Create" type="submit" class="btn btn-success" data-save="modal">Submit</button>
+                    <button onclick="buttonClick()" type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<br />
+<br />
+
+<div class="mb-3 text-dark text-left">
+    <h4 class="text-primary fw-bold">Question List</h4>
+</div>
+<table style="width:90%" class="table table-striped table-bordered">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col" class="p-3"><h4>Questions</h4></th>
+        </tr>
+    </thead>
+    <tbody>              
+        @foreach (var question in Model)
+        {
+                <tr>
+                <td><h5>@question.Id</h5></td>
+                      <td><h5>@question.Questions</h5></td>
+                 </tr>
+        }
+    </tbody>
+</table>
+
+@*<div class="card p-3 mt-4" style="width:40">
+    <div class="text-lg-end pb-2">
+<div class="mb-3 text-dark text-left">
+    <h5 class="text-primary">There are following Questions</h5>
+    <hr class="text-info"/>
+        </div>
+    <ol>
+         @foreach (var question in Model)
+    {
+                <h6>
+                <li class="text-left"> @question.Questions </li></h6>
+                <hr class="text-info" />
+    }
+    </ol>
+</div>
+</div>
+*@
+
+@section scripts{
+    <partial name="_Notification" />
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+        function savefunction() {
+            var text = document.getElementById("TextBox1").value;
+            if (text == "") {
+                //alert("Question is Required!!");
+                Swal.fire({
+                    icon: 'question',
+                    text: 'Question is Required',
+                });
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+    </script>
+    <script>
+        function showMe(value) {
+            if (value == "true") {
+                document.getElementById('x').style.display = "block";
+                document.getElementById('spec').style.display = "block";
+            }
+            if (value == "false") {
+                document.getElementById('x').style.display = "none";
+                document.getElementById('y').style.display = "none";
+                document.getElementById('z').style.display = "none";
+                document.getElementById('k').style.display = "none";
+                document.getElementById('l').style.display = "none";
+                document.getElementById('m').style.display = "block";
+                document.getElementById('n').style.display = "block";
+                document.getElementById('o').style.display = "block";
+                document.getElementById('spec').style.display = "none";
+            }
+        }
+
+        function ButtonClick() {
+            document.getElementById('z').style.display = "block";
+            document.getElementById('m').style.display = "none";
+        }
+
+        function ButtonClick2() {
+            document.getElementById('k').style.display = "block";
+            document.getElementById('n').style.display = "none";
+        }
+
+        function ButtonClick3() {
+            document.getElementById('l').style.display = "block";
+            document.getElementById('o').style.display = "none";
+        }
+
+        function help1() {
+            document.getElementById('z').style.display = "none";
+            document.getElementById('m').style.display = "block";
+        }
+
+        function help2() {
+            document.getElementById('k').style.display = "none";
+            document.getElementById('n').style.display = "block";
+        }
+
+        function help3() {
+            document.getElementById('l').style.display = "none";
+            document.getElementById('o').style.display = "block";
+        }
+
+    </script>
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

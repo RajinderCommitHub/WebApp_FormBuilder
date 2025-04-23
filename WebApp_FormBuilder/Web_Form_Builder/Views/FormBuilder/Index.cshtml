@@ -1,0 +1,223 @@
+﻿@model DataAccessLayer.Models.FormBuilder
+
+<div id="PlaceHolderHere" class="form-group row m-2 p-2">
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#AddQuestions">
+        Add Question
+    </button>
+</div>
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script>
+
+@*Modal Code*@
+<div class="modal fade" id="AddQuestions" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <p class="text-center"></p>
+                <h5 class="modal-title text-primary">Ouestions Form</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form asp-action="Create" asp-controller="FormBuilder">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group  row m-2 p-2">
+                    <div class="col-4">
+                        <label asp-for="Questions">Add Question</label>
+                    </div>
+                    <div class="col-8">
+                        <input id="TextBox1" asp-for="Questions" class="form-control" />
+                        <span asp-validation-for="Questions" class="text-danger"></span>
+                    </div>
+                </div>
+                <div class="form-group row m-2 p-2">
+                    <div class="col-4">
+                        <label>Choose Option</label>
+                    </div>
+                    <div class="col-8">
+                        <select name="" onchange="showMe(this.value)">
+                            <option value="b">Paragraph</option>
+                            <option value="a">CheckBox</option>
+                        </select>
+                        <div id="x" style="display:none">
+                            <br />
+                            <input asp-for="Option1" type="text" placeholder="Add Option 1"><br /><br />
+                            <input asp-for="Option2" type="text" placeholder="Add Option 2"><br /><br />
+                            <button id="m" type="button" onclick="ButtonClick(this.value)" class="btn btn-primary">Add another option</button>
+                            <div id="z" style="display:none">
+                                <input asp-for="Option3" type="text" placeholder="Add Option 3"><br /><br />
+                                <button id="n" onclick="ButtonClick2(this.value)" type="button" class="btn btn-info">Add Another option</button>
+                            </div>
+                            <div id="k" style="display:none">
+                                <input asp-for="Option4" type="text" placeholder="Add Option 4"><br /><br />
+                                <button id="o" onclick="ButtonClick3(this.value)" type="button" class="btn btn-success">Add Another option</button>
+                            </div>
+                            <div id="l" style="display:none">
+                                <input asp-for="Option5" type="text" placeholder="Add Option 5"><br /><br />
+                            </div>
+                        </div>
+                        <div id="y" style="display:none">
+                        <input class="form-control" placeholder="Paragraph answer" />
+                        </div>
+                    </div>
+                </div>
+                <div class="form-check p-5">
+                    <input type="checkbox" class="form-check-input" asp-for="IsSpecified" />
+                    <label class="form-check-label text-info">Allow user to Specify their own answer.</label><br />
+                    <input type="checkbox" class="form-check-input" asp-for="IsRequired" />
+                    <label class="form-check-label text-info">This field is required.</label><br />
+                </div>
+                <br />
+                <div class="modal-footer">
+                    <button onchange="showalert()" id="Button1" asp-controller="FormBuilder" asp-action="Create" type="submit" class="btn btn-primary" data-save="modal">Submit</button>
+                    <button type="button" class="btn btn-info" data-dismiss="modal">Close</button>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+<script>
+    function showMe(value) {
+        if (value == "a") {
+            document.getElementById('x').style.display = "block";
+            document.getElementById('y').style.display = "none";
+        }
+        if (value == "b") {
+            document.getElementById('x').style.display = "none";
+            document.getElementById('y').style.display = "none";
+            document.getElementById('z').style.display = "none";
+            document.getElementById('k').style.display = "none";
+            document.getElementById('l').style.display = "none";
+            document.getElementById('m').style.display = "block";
+            document.getElementById('n').style.display = "block";
+            document.getElementById('o').style.display = "block";
+        }
+    }
+
+    function ButtonClick() {
+        document.getElementById('z').style.display = "block";
+        document.getElementById('m').style.display = "none";
+    }
+
+    function ButtonClick2() {
+        document.getElementById('k').style.display = "block";
+        document.getElementById('n').style.display = "none";
+    }
+
+    function ButtonClick3() {
+        document.getElementById('l').style.display = "block";
+        document.getElementById('o').style.display = "none";
+    }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*
+        function validateForm(index) {
+    var required = document.forms["item-" + index]["isrequired"].value;
+    if (required == "true") {
+        var x = document.forms["item-" + index]["input_" + index].value;
+        if (x == "") {
+            alert("Answer cannot be empty");
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+    else {
+        return true;
+    }
+}
+
+function validateForm2(index) {
+    var required = document.forms["item2-" + index]["isrequired"].value;
+    if (required == "true") {
+        var checkbox1 = document.getElementById("op1_" + index);
+        var checkbox2 = document.getElementById("op2_" + index);
+        var checkbox3 = document.getElementById("op3_" + index);
+        var checkbox4 = document.getElementById("op4_" + index);
+        var checkbox5 = document.getElementById("op5_" + index);
+        var answerbox = document.forms["item2-" + index]["ans_" + index].value;
+        if (checkbox1.checked == true || checkbox2.checked == true || checkbox3.checked == true || checkbox4.checked == true || checkbox5.checked == true) {
+            return true;
+        }
+        else if (answerbox != "") {
+            return true;
+        }
+        else {
+            alert("choose atleast 1 option Or write Answer in Other option");
+            return false;
+        }
+    }
+    else {
+        return true;
+    }
+
+}
+
+function ButtonClick(index) {
+    document.getElementById("in_" + index).style.display = "block";
+    document.getElementById("b_" + index).style.display = "none";
+}*@

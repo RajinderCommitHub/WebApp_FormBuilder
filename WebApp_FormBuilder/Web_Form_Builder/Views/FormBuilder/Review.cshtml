@@ -1,0 +1,22 @@
+﻿@model List<DataAccessLayer.Models.FormBuilder>
+
+
+<div class="card" style="width: 18rem;">
+    <div class="card-body">
+        @foreach (var question in Model)
+        {
+            <h5 class="card-title">@question.Questions</h5>
+            <p class="card-text">@question.Answer1</p>
+            <p class="card-text">@question.Answer2</p>
+            <p class="card-text">@question.Answer3</p>
+            <p class="card-text">@question.Answer4</p>
+            @*<p class="card-text">@question.Answer5</p>*@
+            @if (question.Answer != null)
+            {
+                <p class="card-text">@question.Answer</p>
+            }
+            <br /><br />
+        }
+    </div>
+</div><br />
+<a asp-action="Index" class="btn btn-success text-left">Back to Form Builder</a>

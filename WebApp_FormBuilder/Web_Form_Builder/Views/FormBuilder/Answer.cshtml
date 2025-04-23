@@ -1,0 +1,133 @@
+﻿@model List<DataAccessLayer.Models.FormBuilder>
+
+<a class="nav-link text-white btn btn-primary" asp-area="" asp-controller="FormBuilder" asp-action="Index">Add New Question</a>
+<br />
+@Html.ValidationMessage("Error")
+
+@for (int i = 0; i < Model.Count; i++)
+{
+    <div class="card text-center">
+        <div class="card-header">
+            <div class=" form-group row m-2 p-2">
+                <div class="col-4">
+                    <label>Question</label>
+                </div>
+                <div class="col-8">
+                    <p class="text-primary text-center">@Model[i].Questions</p>
+                </div>
+            </div>
+        </div>
+        <div class="card-body">
+            @if (Model[i].Option1 == null && Model[i].Option2 == null && Model[i].Option3 == null && Model[i].Option4 == null)
+            {
+                <form id="item-@i" onsubmit="return validateForm(@i)" method="post" asp-controller="FormBuilder" asp-action="Answer">
+                    <div class="form-group row m-2 p-2">
+                        <div class="col-4">
+                            <label>Answer</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="hidden" asp-for="@Model[i].Questions" name="questions" />
+                            <input type="hidden" asp-for="@Model[i].Id" name="id" />
+                            <input id="input_@i" type="text" name="answer" />
+                            <br /><br />
+                            @if (Model[i].IsRequired)
+                            {
+                                <input type="hidden" asp-for="@Model[i].IsRequired" name="isrequired" value="true" />
+                            }
+                            @if (Model[i].IsSpecified)
+                            {
+                                <input type="hidden" asp-for="@Model[i].IsSpecified" name="isspecified" value="true" />
+                            }
+
+                            <input type="submit" value="Submit" class="btn btn-success " />
+                        </div>
+                    </div>
+                </form>
+            }
+            else
+            {
+                <form id="item2-@i" onsubmit="return validateForm2(@i)" method="post" asp-controller="FormBuilder" asp-action="Answer">
+                    <div class="form-group row m-2 p-2">
+                        <div class="col-4">
+                            <label>Answer</label>
+                        </div>
+                        <div class="col-8">
+                            <input type="hidden" asp-for="@Model[i].Id" name="id" />
+                            <input type="hidden" asp-for="@Model[i].Questions" name="questions" />
+                            <input type="hidden" asp-for="@Model[i].Option1" name="option1" />
+                            <input type="hidden" asp-for="@Model[i].Option2" name="option2" />
+                            <input type="hidden" asp-for="@Model[i].Option3" name="option3" />
+                            <input type="hidden" asp-for="@Model[i].Option4" name="option4" />
+                            <input type="hidden" asp-for="@Model[i].Option5" name="option5" />
+
+                            @if (Model[i].Option1 != null)
+                            {
+                                <label>@Model[i].Option1</label>
+                                <input id="op1_@i" type="checkbox" value="@Model[i].Option1" name="Answer1" />
+                                <br /> <br />
+                            }
+
+                            @if (Model[i].Option2 != null)
+                            {
+                                <label>@Model[i].Option2</label>
+                                <input id="op2_@i" type="checkbox" value="@Model[i].Option2" name="Answer2" />
+                                <br />
+                            }
+
+                            @if (Model[i].Option3 != null)
+                            {
+                                <br />
+                                <label>@Model[i].Option3</label>
+                                <input id="op3_@i" type="checkbox" value="@Model[i].Option3" name="Answer3" />
+                                <br />
+                            }
+                            
+                            @if (Model[i].Option4 != null)
+                            {
+                                <br />
+                                <label>@Model[i].Option4</label>
+                                <input id="op4_@i" type="checkbox" value="@Model[i].Option4" name="Answer4" />
+                                <br />
+                            }
+                           
+                            @if (Model[i].Option5 != null)
+                            {
+                                <br />
+                                <label>@Model[i].Option5</label>
+                                <input id="op5_@i" type="checkbox" value="@Model[i].Option5" name="Answer5" />
+                                <br />
+                            }
+                            
+                            <br />
+                            @if (Model[i].IsRequired)
+                            {
+                                <input type="hidden" asp-for="@Model[i].IsRequired" name="isrequired" value="true" />
+                            }
+                            @if (Model[i].IsSpecified)
+                            {
+                                <input type="hidden" asp-for="@Model[i].IsSpecified" name="isspecified" value="true" />
+                                <button id="b_@i" type="button" onclick="ButtonClick(@i)">+ Other Option</button>
+                            }
+                            <div id="in_@i" style="display:none">
+                                <input id="ans_@i" name="answer" type="text" placeholder="Other Option">
+                            </div>
+                            <br /><br />
+                            <input type="submit" value="Submit" class="btn btn-success " />
+                        </div>
+                    </div>
+                </form>
+            }
+        </div>
+    </div>
+    <br />
+    <br />
+}
+
+<a class="nav-link text-white btn btn-info" asp-area="" asp-controller="FormBuilder" asp-action="Review">Review Answers ></a>
+
+
+@section scripts{
+    <script src="~/js/answer.js"></script>
+}
+
+
